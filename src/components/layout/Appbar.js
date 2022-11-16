@@ -5,7 +5,7 @@ import { BsSearch } from "react-icons/bs";
 
 const Appbar = () => {
     return (
-        <HStack justifyContent={"space-between"} bg='#24333C' w='100%' p={4} color='white'>
+        <HStack justifyContent={"space-between"} bg='#24333C' w='100%' py={4} px={12} color='white'>
             <Heading>FINASTRA</Heading>
             {/* Search */}
             <Box>
