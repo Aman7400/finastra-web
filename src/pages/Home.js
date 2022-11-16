@@ -1,9 +1,11 @@
-import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Container, Grid, GridItem, Heading, Highlight, HStack, Tag, Text, VStack } from '@chakra-ui/react'
+import { Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Container, Grid, GridItem, Heading, Highlight, HStack, IconButton, Tag, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
 import { GoLocation } from "react-icons/go"
 import { BiDislike, BiLike } from "react-icons/bi"
 import { VscReport } from "react-icons/vsc"
 import { MdOutlineComment } from "react-icons/md"
+import { FiFacebook,FiInstagram,FiTwitter } from "react-icons/fi"
+
 
 const Home = () => {
   return (
@@ -11,25 +13,9 @@ const Home = () => {
       {/* Feed */}
       <Grid mx={"auto"} maxW={"container.lg"} templateColumns='repeat(3, 1fr)' gap={6}>
         <GridItem colSpan={2} >
-          <Card bgColor={"white"}>
-            <CardHeader>
-              <Heading>Why China is a mF</Heading>
-              <HStack gap={1}>
-                <Tag>Sample Tag</Tag>
-                <Tag>Sample Tag</Tag>
-                <Tag>Sample Tag</Tag>
-              </HStack>
-            </CardHeader>
-            <CardBody>
-              <Text>View a summary of all your customers over the last month.</Text>
-            </CardBody>
-            <CardFooter>
-              <Button colorScheme="red">
-                Answer it
-              </Button>
-            </CardFooter>
-          </Card>
-          {/* BEST */}
+          {/* Question */}
+          <QuestionCard />
+          {/* Answers */}
           <AnswerCard isBestAnswer comments={[1, 2, 3]} />
           <AnswerCard comments={[1, 2]} />
           <AnswerCard />
@@ -50,6 +36,43 @@ const Home = () => {
 }
 
 export default Home;
+
+function QuestionCard() {
+  return (
+    <Card fontFamily={"Montserrat"} bgColor={"white"}>
+      <CardHeader>
+        <HStack gap={3} alignItems="flex-start">
+          <Avatar size="lg" name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
+          <Box>
+            <Heading fontFamily={"inherit"}>Why China is a mF ?</Heading>
+            <HStack gap={1}>
+              <Tag>Sample Tag</Tag>
+              <Tag>Sample Tag</Tag>
+              <Tag>Sample Tag</Tag>
+            </HStack>
+          </Box>
+        </HStack>
+      </CardHeader>
+      <CardBody>
+        {/* Description */}
+        <Text>Sed ultricies tellus libero. Aenean vulputate ligula nec diam vulputate aliquet. Nam consequat odio et ipsum mollis bibendum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam sapien diam, ultricies sed est in, hendrerit ornare lorem. Duis finibus non velit sed tempus. Curabitur pulvinar orci vitae velit condimentum, cursus dapibus lorem ornare. Pellentesque habitant morbi tristique ?</Text>
+      </CardBody>
+      <CardFooter>
+        <HStack w={"full"} justifyContent="space-between">
+          <Button colorScheme="red">
+            Answer it
+          </Button>
+          <HStack>
+            <Text>Share this on : </Text>
+            <IconButton rounded="full" aria-label='Search database' icon={<FiFacebook />} />
+            <IconButton rounded="full" aria-label='Search database' icon={<FiInstagram />} />
+            <IconButton rounded="full"  aria-label='Search database' icon={<FiTwitter />} />
+          </HStack>
+        </HStack>
+      </CardFooter>
+    </Card>
+  )
+}
 
 function BasicPersonInfo() {
   return (
@@ -113,9 +136,9 @@ function AnswerCTAs() {
   )
 }
 
-function AnswerCard({ details, isBestAnswer = false, index, comments=[] }) {
+function AnswerCard({ details, isBestAnswer = false, index, comments = [] }) {
   return (
-    <Card w={"full"} borderRadius={!isBestAnswer && "none"} my={isBestAnswer ? 4 : 0} bgColor={"white"}>
+    <Card fontFamily="Montserrat" w={"full"} borderRadius={!isBestAnswer && "none"} my={isBestAnswer ? 4 : 0} bgColor={"white"}>
       {/* Heading */}
       {
         isBestAnswer &&
@@ -151,12 +174,12 @@ function AnswerCard({ details, isBestAnswer = false, index, comments=[] }) {
             {/* Answer Stats & CTA */}
             <AnswerActions />
             {/* Comments */}
-            <Box  my={4}>
+            <Box my={4}>
               {
                 comments.map((comment, i) => <AnswerComment key={i} />)
               }
             </Box>
-            
+
           </Box>
         </HStack>
       </CardBody>
@@ -167,7 +190,7 @@ function AnswerCard({ details, isBestAnswer = false, index, comments=[] }) {
 
 function AnswerComment() {
   return (
-    <Card w={"full"}>
+    <Card fontFamily="Montserrat" w={"full"}>
       <CardBody>
         <HStack>
           <Avatar size="sm" name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />
