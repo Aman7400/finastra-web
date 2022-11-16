@@ -1,16 +1,20 @@
 import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container, Grid, GridItem, Heading, HStack, IconButton, Input, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import React from 'react'
-import { BsPatchQuestion, BsPen, BsPencilSquare, BsShare,BsBookmark } from "react-icons/bs"
+import { BsPatchQuestion, BsPen, BsPencilSquare, BsShare, BsBookmark } from "react-icons/bs"
 import { Link } from 'react-router-dom';
 import { IoMdMore, IoMdClose } from "react-icons/io";
 import { MdOutlineModeComment, MdOutlineReportProblem } from "react-icons/md";
 import { GrLike, GrDislike } from "react-icons/gr";
-import {AiOutlineCopy} from "react-icons/ai"
+import { AiOutlineCopy } from "react-icons/ai"
 import { format } from 'date-fns';
 
 const Home = () => {
 
-  const allFeeds = [1, 2, 3, 4];
+  const [allFeeds, setAllFeeds] = React.useState([1, 2, 3, 4]);
+
+  const handleStopSeeingThis = (id) => {
+    setAllFeeds(prev => prev.filter((feed, i) => i !== id))
+  }
 
   return (
     <Container bgColor={"#D7E2E7"} p={6} minH={"100vh"} maxW={"100%"}>
@@ -19,7 +23,7 @@ const Home = () => {
         <GridItem colSpan={2} >
           <AskOrShareInput />
           {
-            allFeeds.map((feed, i) => <FeedCard feed={feed} key={i} />)
+            allFeeds.map((feed, i) => <FeedCard onPressStop={handleStopSeeingThis} feed={feed} key={i} />)
           }
         </GridItem>
       </Grid>
@@ -48,18 +52,18 @@ function AskOrShareInput() {
   )
 }
 
-function FeedCard({ feed }) {
+function FeedCard({ feed,onPressStop }) {
   return (
 
     <Card bgColor="white" my={3} rounded="sm">
-      <FeedCardHeader />
+      <FeedCardHeader feed={feed} onPressStop={onPressStop} />
       <FeedCardBody feed={feed} />
       <FeedCardBodyFooter />
     </Card>
   )
 }
 
-function FeedCardHeader() {
+function FeedCardHeader({feed,onPressStop}) {
   const date = format(new Date(), 'dd MMM, yy')
   return (
     <CardHeader pb={1}>
@@ -88,12 +92,12 @@ function FeedCardHeader() {
                   { title: "Not interested in this", icon: <IoMdClose /> },
                   { title: "Bookmark", icon: <BsBookmark /> },
                   { title: "Report", icon: <MdOutlineReportProblem /> },
-                ].map(({ title, icon}, i) => <MenuItem icon={icon} key={i}>{title}</MenuItem>
+                ].map(({ title, icon }, i) => <MenuItem icon={icon} key={i}>{title}</MenuItem>
                 )
               }
             </MenuList>
           </Menu>
-          <IconButton size="sm" aria-label='Stop Seeing This' icon={<IoMdClose />} />
+          <IconButton onClick={() => onPressStop(feed)} size="sm" aria-label='Stop Seeing This' icon={<IoMdClose />} />
         </HStack >
       </HStack >
     </CardHeader >
