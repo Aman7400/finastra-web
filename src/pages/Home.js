@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container, Grid, GridItem, Heading, HStack, IconButton, Input, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
+import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container, Grid, GridItem, Heading, HStack, IconButton, Input, Menu, MenuButton, MenuItem, MenuList, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tab, TabList, TabPanel, TabPanels, Tabs, Text, Textarea } from '@chakra-ui/react'
 import React from 'react'
 import { BsPatchQuestion, BsPen, BsPencilSquare, BsShare, BsBookmark } from "react-icons/bs"
 import { Link } from 'react-router-dom';
@@ -16,22 +16,66 @@ const Home = () => {
     setAllFeeds(prev => prev.filter((feed, i) => i !== id))
   }
 
+  const [createContentTab, setCreateContentTab] = React.useState(0);
+  const [showCreateModal, setShowCreateModal] = React.useState(false);
+
+  const handleCreate = (type) => {
+    if (type === "post") {
+      setCreateContentTab(1)
+    }
+    setCreateContentTab(0)
+    setShowCreateModal(true);
+
+  }
+
   return (
     <Container bgColor={"#D7E2E7"} p={6} minH={"100vh"} maxW={"100%"}>
       {/* Feed */}
       <Grid mx={"auto"} maxW={"container.lg"} templateColumns='repeat(3, 1fr)' gap={6}>
         <GridItem colSpan={2} >
-          <AskOrShareInput />
+          <AskOrShareInput handleCreate={handleCreate} />
           {
             allFeeds.map((feed, i) => <FeedCard onPressStop={handleStopSeeingThis} feed={feed} key={i} />)
           }
         </GridItem>
       </Grid>
+      <Modal isOpen={showCreateModal} size="2xl" isCentered onClose={() => setShowCreateModal(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody>
+            <Tabs colorScheme="red" index={createContentTab}>
+              <TabList>
+                <Tab onClick={() => setCreateContentTab(0)}>Add Question</Tab>
+                <Tab onClick={() => setCreateContentTab(1)}>Create Post</Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel>
+                  <Input variant={"flushed"} placeholder={`Start your question with "What", "How", "Why" etc `} />
+                </TabPanel>
+                <TabPanel>
+                  <Textarea placeholder='Say something...' />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+
+          </ModalBody>
+
+          <ModalFooter>
+
+            <Button variant='ghost' onClick={() => setShowCreateModal(false)}>Cancel</Button>
+            <Button colorScheme='red' mr={3} >
+              {createContentTab === 0 ? "Add Question" : "Post"}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
     </Container>
   )
 }
 
-function AskOrShareInput() {
+function AskOrShareInput({ handleCreate }) {
   return (
     <Card bgColor="white">
       <CardBody p="3">
@@ -41,9 +85,9 @@ function AskOrShareInput() {
             <Input variant={"filled"} placeholder="What do you want to ask or share?" />
             {/* CTA's */}
             <HStack my={2} justifyContent="space-evenly">
-              <Button size="sm" variant={"ghost"} colorScheme="red" leftIcon={<BsPatchQuestion />}>Ask</Button>
-              <Button size="sm" variant={"ghost"} colorScheme="red" leftIcon={<BsPen />}>Answer</Button>
-              <Button size="sm" variant={"ghost"} colorScheme="red" leftIcon={<BsPencilSquare />}>Post</Button>
+              <Button size="sm" onClick={() => handleCreate("ask")} variant={"ghost"} colorScheme="red" leftIcon={<BsPatchQuestion />}>Ask</Button>
+              <Link to="/answer"><Button size="sm" variant={"ghost"} colorScheme="red" leftIcon={<BsPen />}>Answer</Button></Link>
+              <Button size="sm" onClick={() => handleCreate("post")} variant={"ghost"} colorScheme="red" leftIcon={<BsPencilSquare />}>Post</Button>
             </HStack>
           </Box>
         </HStack>
@@ -52,7 +96,7 @@ function AskOrShareInput() {
   )
 }
 
-function FeedCard({ feed,onPressStop }) {
+function FeedCard({ feed, onPressStop }) {
   return (
 
     <Card bgColor="white" my={3} rounded="sm">
@@ -63,7 +107,7 @@ function FeedCard({ feed,onPressStop }) {
   )
 }
 
-function FeedCardHeader({feed,onPressStop}) {
+function FeedCardHeader({ feed, onPressStop }) {
   const date = format(new Date(), 'dd MMM, yy')
   return (
     <CardHeader pb={1}>
