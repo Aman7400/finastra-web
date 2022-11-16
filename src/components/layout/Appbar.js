@@ -22,8 +22,7 @@ const Appbar = () => {
                 {
                     [
                         { title: 'Home', href: "/" },
-                        { title: 'Ask', href: "/ask" },
-                        { title: 'Topics', href: "/topics" },
+                        { title: 'Answer', href: "/answer" },
                         { title: 'Explore', href: "/explore" },
                     ].map(({ title, href }, i) =>
                         <Link to={href}>
