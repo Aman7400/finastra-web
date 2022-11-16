@@ -138,7 +138,7 @@ function AnswerCTAs() {
 
 function AnswerCard({ details, isBestAnswer = false, index, comments = [] }) {
   return (
-    <Card fontFamily="Montserrat" w={"full"} borderRadius={!isBestAnswer && "none"} my={isBestAnswer ? 4 : 0} bgColor={"white"}>
+    <Card w={"full"} borderRadius={!isBestAnswer && "none"} my={isBestAnswer ? 4 : 0} bgColor={"white"}>
       {/* Heading */}
       {
         isBestAnswer &&
@@ -179,7 +179,7 @@ function AnswerCard({ details, isBestAnswer = false, index, comments = [] }) {
                 comments.map((comment, i) => <AnswerComment key={i} />)
               }
             </Box>
-
+              {/* Add a new comment */}
           </Box>
         </HStack>
       </CardBody>
@@ -190,7 +190,7 @@ function AnswerCard({ details, isBestAnswer = false, index, comments = [] }) {
 
 function AnswerComment() {
   return (
-    <Card fontFamily="Montserrat" w={"full"}>
+    <Card w={"full"}>
       <CardBody>
         <HStack>
           <Avatar size="sm" name='Prosper Otemuyiwa' src='https://bit.ly/prosper-baba' />
