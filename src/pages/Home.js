@@ -1,15 +1,16 @@
-import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container, Grid, GridItem, Heading, HStack, IconButton, Input, Text } from '@chakra-ui/react'
+import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Container, Grid, GridItem, Heading, HStack, IconButton, Input, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import React from 'react'
-import { BsPatchQuestion, BsPen, BsPencilSquare, BsShare } from "react-icons/bs"
+import { BsPatchQuestion, BsPen, BsPencilSquare, BsShare,BsBookmark } from "react-icons/bs"
 import { Link } from 'react-router-dom';
 import { IoMdMore, IoMdClose } from "react-icons/io";
-import { MdOutlineModeComment } from "react-icons/md";
+import { MdOutlineModeComment, MdOutlineReportProblem } from "react-icons/md";
 import { GrLike, GrDislike } from "react-icons/gr";
+import {AiOutlineCopy} from "react-icons/ai"
 import { format } from 'date-fns';
 
 const Home = () => {
 
-  const allFeeds = [1,2,3,4];
+  const allFeeds = [1, 2, 3, 4];
 
   return (
     <Container bgColor={"#D7E2E7"} p={6} minH={"100vh"} maxW={"100%"}>
@@ -47,15 +48,14 @@ function AskOrShareInput() {
   )
 }
 
-function FeedCard({feed}) {
+function FeedCard({ feed }) {
   return (
-    <Link to={`/${feed}`}>
-      <Card bgColor="white" my={3} rounded="sm">
-        <FeedCardHeader />
-        <FeedCardBody />
-        <FeedCardBodyFooter />
-      </Card>
-    </Link>
+
+    <Card bgColor="white" my={3} rounded="sm">
+      <FeedCardHeader />
+      <FeedCardBody feed={feed} />
+      <FeedCardBodyFooter />
+    </Card>
   )
 }
 
@@ -79,20 +79,35 @@ function FeedCardHeader() {
         </HStack>
         {/* Options */}
         <HStack>
-          <IconButton size="sm" colorScheme="red" variant="ghost" aria-label='More Options' icon={<IoMdMore />} />
+          <Menu>
+            <MenuButton as={IconButton} aria-label='More Options' size="sm" colorScheme="red" variant="ghost" icon={<IoMdMore />} />
+            <MenuList>
+              {
+                [
+                  { title: "Copy link", icon: <AiOutlineCopy /> },
+                  { title: "Not interested in this", icon: <IoMdClose /> },
+                  { title: "Bookmark", icon: <BsBookmark /> },
+                  { title: "Report", icon: <MdOutlineReportProblem /> },
+                ].map(({ title, icon}, i) => <MenuItem icon={icon} key={i}>{title}</MenuItem>
+                )
+              }
+            </MenuList>
+          </Menu>
           <IconButton size="sm" aria-label='Stop Seeing This' icon={<IoMdClose />} />
-        </HStack>
-      </HStack>
-    </CardHeader>
+        </HStack >
+      </HStack >
+    </CardHeader >
   )
 }
 
-function FeedCardBody() {
+function FeedCardBody({ feed }) {
   return (
-    <CardBody py={2}>
-      <Heading size="md">What are your favorite wholesome pictures?</Heading>
-      <Text fontSize="sm">I really don't understand guys with this problem… it's so wholesome and beautiful.</Text>
-    </CardBody>
+    <Link to={`/${feed}`}>
+      <CardBody py={2}>
+        <Heading size="md">What are your favorite wholesome pictures?</Heading>
+        <Text fontSize="sm">I really don't understand guys with this problem… it's so wholesome and beautiful.</Text>
+      </CardBody>
+    </Link>
   )
 }
 
